@@ -1,0 +1,4 @@
+{
+  "apiKey": "",
+  "_comment": "备用配置方式：把阿里云百炼 API Key 填到 apiKey 字段（或直接在项目根目录的 .env 里设置 DASHSCOPE_API_KEY，推荐用 .env）。两者都不填时后端会拒绝调用并提示。"
+}

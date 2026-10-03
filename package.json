@@ -1,0 +1,20 @@
+{
+  "name": "office-ai-assistant",
+  "version": "1.0.0",
+  "description": "Microsoft Office AI 助手 —— 基于 Office.js 加载项 + 阿里云百炼 DashScope 官方接口，全模型适配（文本/视觉/图片生成/向量/语音）",
+  "main": "server/src/index.js",
+  "scripts": {
+    "start": "node server/src/index.js",
+    "dev": "node --watch server/src/index.js",
+    "smoke": "node scripts/smoke-test.js",
+    "check": "node --check server/src/index.js && node --check server/src/dashscope.js && node --check server/src/modelRegistry.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  }
+}
