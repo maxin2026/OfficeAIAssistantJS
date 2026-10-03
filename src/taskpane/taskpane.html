@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Office AI 助手</title>
+  <script src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js"></script>
+  <link rel="stylesheet" href="taskpane.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="logo">🅰️</div>
+    <div>
+      <h1>Office AI 助手</h1>
+      <p class="subtitle">阿里云百炼 DashScope · 全模型适配</p>
+    </div>
+    <button id="btnSettings" class="icon-btn" title="设置">⚙</button>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="chat">智能写作</button>
+    <button class="tab" data-tab="image">图片生成</button>
+    <button class="tab" data-tab="vision">文档理解</button>
+  </nav>
+
+  <main id="panelChat" class="panel active">
+    <section class="controls">
+      <label>模型
+        <select id="selChatModel"></select>
+      </label>
+      <label>任务
+        <select id="selPromptPreset">
+          <option value="free">自由输入</option>
+          <option value="polish">润色改写</option>
+          <option value="translate">翻译成中文</option>
+          <option value="translate-en">翻译成英文</option>
+          <option value="summary">摘要提炼</option>
+          <option value="title">标题建议</option>
+        </select>
+      </label>
+      <div class="inline-controls">
+        <label class="check"><input type="checkbox" id="chkThinking" /> 思考模式</label>
+        <label>温度 <input type="range" id="rngTemp" min="0" max="1.5" step="0.1" value="0.7" /></label>
+        <span id="lblTemp">0.7</span>
+      </div>
+    </section>
+
+    <div class="editor-row">
+      <textarea id="chatInput" rows="5" placeholder="粘贴或输入要处理的文本，或点击下方「读取选区」从文档取内容…"></textarea>
+    </div>
+
+    <div class="btn-row">
+      <button id="btnReadSelection" class="ghost">📄 读取选区</button>
+      <button id="btnSend" class="primary">▶ 生成</button>
+      <button id="btnInsert" class="ghost" disabled>⬇ 插入到文档</button>
+      <button id="btnReplace" class="ghost" disabled>↺ 替换选区</button>
+    </div>
+
+    <pre id="chatOutput" class="output empty">结果将显示在这里…</pre>
+    <div id="chatStatus" class="status"></div>
+  </main>
+
+  <main id="panelImage" class="panel">
+    <section class="controls">
+      <label>模型
+        <select id="selImageModel"></select>
+      </label>
+      <label>尺寸
+        <select id="selImageSize">
+          <option value="1024*1024">1:1 · 1024×1024</option>
+          <option value="720*1280">9:16 · 720×1280</option>
+          <option value="1280*720">16:9 · 1280×720</option>
+        </select>
+      </label>
+      <label>数量
+        <select id="selImageN">
+          <option value="1">1 张</option>
+          <option value="2">2 张</option>
+          <option value="4">4 张</option>
+        </select>
+      </label>
+    </section>
+
+    <textarea id="imagePrompt" rows="4" placeholder="描述你要生成的图片，例如：现代简约风格的商务办公场景，浅色调，高清…"></textarea>
+    <div class="btn-row">
+      <button id="btnGenImage" class="primary">🎨 生成图片</button>
+      <button id="btnInsertImage" class="ghost" disabled>⬇ 插入到文档</button>
+      <button id="btnOpenImage" class="ghost" disabled>↗ 新窗口打开</button>
+    </div>
+    <div id="imageResult" class="image-result"></div>
+    <div id="imageStatus" class="status"></div>
+  </main>
+
+  <main id="panelVision" class="panel">
+    <section class="controls">
+      <label>模型
+        <select id="selVisionModel"></select>
+      </label>
+      <label class="check"><input type="checkbox" id="chkUseClipboard" /> 使用剪贴板图片</label>
+    </section>
+    <textarea id="visionPrompt" rows="3" placeholder="就图片或文档内容提问，例如：提取这张表格里的数据…"></textarea>
+    <div id="visionImagePreview" class="image-result">
+      <input type="file" id="visionFile" accept="image/*" hidden />
+      <button id="btnPickImage" class="ghost">🖼 选择图片</button>
+    </div>
+    <div class="btn-row">
+      <button id="btnVisionRun" class="primary">🔍 分析</button>
+      <button id="btnVisionInsert" class="ghost" disabled>⬇ 插入到文档</button>
+    </div>
+    <pre id="visionOutput" class="output empty">分析结果将显示在这里…</pre>
+    <div id="visionStatus" class="status"></div>
+  </main>
+
+  <dialog id="dlgSettings">
+    <h3>后端服务设置</h3>
+    <label>API 地址（需与启动后端的端口一致）
+      <input type="text" id="inpApiBase" placeholder="http://localhost:3000" />
+    </label>
+    <p class="hint">密钥保存在服务端 .env，不会下发到前端。</p>
+    <div class="btn-row">
+      <button id="btnSaveSettings" class="primary">保存</button>
+      <button id="btnCloseSettings" class="ghost">关闭</button>
+    </div>
+  </dialog>
+
+  <script src="taskpane.js"></script>
+</body>
+</html>
